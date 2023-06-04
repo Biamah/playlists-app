@@ -6,6 +6,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
+    "preinstall": "node ./bin/preinstall.js",
     "dev": "nodemon index",
     "test": "echo \"Error: no test specified\" && exit 1",
     "prisma:generate": "prisma generate",
@@ -47,7 +48,6 @@
     "helmet": "^7.0.0",
     "http-status-codes": "^2.2.0",
     "morgan": "^1.10.0",
-    "nodemon": "^2.0.22",
     "prisma": "^4.15.0",
     "winston": "^3.9.0",
     "winston-daily-rotate-file": "^4.7.1",
@@ -55,7 +55,8 @@
   },
   "devDependencies": {
     "eslint": "^8.42.0",
-    "husky": "^8.0.3"
+    "husky": "^8.0.3",
+    "nodemon": "^2.0.22"
   },
   "engines": {
     "node": ">= 18",
