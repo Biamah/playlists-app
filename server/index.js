@@ -1,10 +1,14 @@
 import { PrismaClient } from "@prisma/client";
 new PrismaClient()
 
+import dotenv from 'dotenv'
+dotenv.config();
+
 import cors from 'cors';
 import helmet from 'helmet';
 import express from 'express';
 import bodyParser from 'body-parser';
+import cookieParser from "cookie-parser";
 import morgan from 'morgan';
 
 import routes from './src/routes.js';
@@ -26,7 +30,9 @@ app.locals.version = process.env.APP_VERSION;
 app.use(cors());
 app.use(helmet());
 app.use(morgan('tiny', { stream: logStream }));
+app.use(cookieParser('secret'));
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(errorHandler.bodyParser);
 
 app.use('/api', routes);

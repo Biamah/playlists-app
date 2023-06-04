@@ -1,4 +1,5 @@
 import HttpStatus from 'http-status-codes';
+import { ValidationError } from 'yup'
 
 /**
  * Build error response for validation errors.
@@ -7,19 +8,14 @@ import HttpStatus from 'http-status-codes';
  * @returns {Object}
  */
 function buildError(err) {
+  console.log(err.errors)
   // Validation errors
-  if (err.isJoi) {
+  if (err instanceof ValidationError) {
     return {
       code: HttpStatus.BAD_REQUEST,
       message: HttpStatus.getStatusText(HttpStatus.BAD_REQUEST),
-      details:
-        err.details &&
-        err.details.map((err) => {
-          return {
-            message: err.message,
-            param: err.path.join('.'),
-          };
-        }),
+      values: err.value,
+      details: err.errors,
     };
   }
 

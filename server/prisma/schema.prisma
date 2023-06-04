@@ -7,8 +7,16 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model user {
-  id    Int    @id @default(autoincrement())
-  name  String @db.VarChar(99)
-  email String @db.VarChar(99)
+model User {
+  id      Int       @id @default(autoincrement())
+  name    String    @db.VarChar(99)
+  email   String    @unique @db.VarChar(99)
+  Session Session[]
+}
+
+model Session {
+  id     Int    @id @default(autoincrement())
+  token  String @unique @db.VarChar(99)
+  userId Int
+  user   User   @relation(fields: [userId], references: [id])
 }
