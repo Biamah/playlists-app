@@ -12,27 +12,38 @@ export class Login {
     this.password = data.password;
   }
 
-  encryptPassword() {
-    // TODO
+  async encryptPassword() {
+    const hashedPassword = await bcrypt.hash(this.password, saltRounds);
+
+    this.password = hashedPassword;
   }
 
   async validate() {
     const schema = yup.object({
-      email: yup.string().email().required()
+      email: yup.string().email().required(),
+      password: yup.string().min(8).required()
     })
 
     const value = {
-      email: this.email
+      email: this.email,
+      password: this.password
     }
 
-    await schema.validate(value, { strict: true })
+    await schema.validate(value, { strict: true });
+    await this.encryptPassword();
   }
 
   async findUser() {
     const user = await prisma.user.findUnique({
       where: {
         email: this.email,
-      }
+      },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        password: true,
+      },
     });
 
     return user;

@@ -8,10 +8,11 @@ datasource db {
 }
 
 model User {
-  id      Int       @id @default(autoincrement())
-  name    String    @db.VarChar(99)
-  email   String    @unique @db.VarChar(99)
-  Session Session[]
+  id       Int       @id @default(autoincrement())
+  name     String    @db.VarChar(99)
+  email    String    @unique @db.VarChar(99)
+  password String    @db.VarChar(99)
+  Session  Session[]
 }
 
 model Session {
