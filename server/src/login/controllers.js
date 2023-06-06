@@ -6,6 +6,7 @@ export async function login(req, res, next) {
   try {
     await login.validate()
     const user = await login.findUser()
+    await login.comparePassword(user.password);
 
     const token = await login.tokenize(user.id)
 

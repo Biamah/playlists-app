@@ -2,6 +2,7 @@ import { NewUser, Me } from './entities.js';
 
 export async function create(req, res, next) {
   const user = new NewUser(req.body)
+  console.log(req.body);
 
   try {
     user.validate()

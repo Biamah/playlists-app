@@ -1,5 +1,7 @@
 import { PrismaClient } from "@prisma/client";
+import bcrypt from 'bcrypt';
 const prisma = new PrismaClient()
+const saltRounds = 10;
 
 export class NewUser {
   constructor(data) {
@@ -8,8 +10,10 @@ export class NewUser {
     this.password = data.password;
   }
 
-  encryptPassword() {
-    // TODO
+  async encryptPassword() {
+    const hashedPassword = await bcrypt.hash(this.password, saltRounds);
+
+    this.password = hashedPassword;
   }
 
   validate() {
@@ -17,6 +21,8 @@ export class NewUser {
   }
 
   async save() {
+    await this.encryptPassword();
+
     const newUser = await prisma.user.create({
       data: {
         name: this.name,

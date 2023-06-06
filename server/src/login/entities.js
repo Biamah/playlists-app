@@ -12,12 +12,6 @@ export class Login {
     this.password = data.password;
   }
 
-  async encryptPassword() {
-    const hashedPassword = await bcrypt.hash(this.password, saltRounds);
-
-    this.password = hashedPassword;
-  }
-
   async validate() {
     const schema = yup.object({
       email: yup.string().email().required(),
@@ -30,7 +24,6 @@ export class Login {
     }
 
     await schema.validate(value, { strict: true });
-    await this.encryptPassword();
   }
 
   async findUser() {
@@ -47,6 +40,14 @@ export class Login {
     });
 
     return user;
+  }
+
+  async comparePassword(password) {
+    const compare = await bcrypt.compare(this.password, password);
+
+    if (!compare) {
+      throw Boom.badRequest();
+    }
   }
 
   async tokenize(id) {
